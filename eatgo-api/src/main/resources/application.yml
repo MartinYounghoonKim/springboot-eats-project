@@ -1,0 +1,6 @@
+#logging:
+#  level:
+#    kr.co.fastcampus: error
+#    org:
+#      springframework: error
+#        hibernate.SQL: info
