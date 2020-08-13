@@ -1,6 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
+import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ class RestaurantControllerTest {
 	@Autowired
 	private MockMvc mvc;
 
-	@SpyBean
+	@SpyBean(RestaurantRepositoryImpl.class)
 	private RestaurantRepository restaurantRepository;
 
 	@Test

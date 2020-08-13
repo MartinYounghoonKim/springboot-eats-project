@@ -1,27 +1,9 @@
 package kr.co.fastcampus.eatgo.domain;
 
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class RestaurantRepository {
-	private List<Restaurant> restaurants = new ArrayList<>();
+public interface RestaurantRepository {
+	List<Restaurant> findAll();
 
-	public RestaurantRepository() {
-		restaurants.add(new Restaurant(1004L, "Bob zip", "Seoul"));
-		restaurants.add(new Restaurant(2020L, "Martin", "Seoul"));
-	}
-
-	public List<Restaurant> findAll() {
-		return restaurants;
-	}
-
-	public Restaurant findById(Long id) {
-		return restaurants.stream()
-			.filter(restaurant -> restaurant.getId().equals(id))
-			.findFirst()
-			.orElse(null);
-	}
+	Restaurant findById(Long id);
 }
