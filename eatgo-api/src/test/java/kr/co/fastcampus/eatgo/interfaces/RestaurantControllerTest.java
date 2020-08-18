@@ -1,5 +1,7 @@
 package kr.co.fastcampus.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.domain.MenuItemRepository;
+import kr.co.fastcampus.eatgo.domain.MenuItemRepositoryImpl;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepository;
 import kr.co.fastcampus.eatgo.domain.RestaurantRepositoryImpl;
 import org.junit.jupiter.api.Test;
@@ -25,6 +27,9 @@ class RestaurantControllerTest {
 	@SpyBean(RestaurantRepositoryImpl.class)
 	private RestaurantRepository restaurantRepository;
 
+	@SpyBean(MenuItemRepositoryImpl.class) 			// 주입 받을 구현체
+	private MenuItemRepository menuItemRepository;  // Mock 할 인터페이스
+
 	@Test
 	public void 리스트_받아오기 () throws Exception {
 		mvc.perform(get("/restaurants"))
@@ -38,7 +43,12 @@ class RestaurantControllerTest {
 		mvc.perform(get("/restaurants/1004"))
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("\"id\":1004")))
-			.andExpect(content().string(containsString("\"name\":\"Bob zip\"")));
+			.andExpect(content().string(containsString("\"name\":\"Bob zip\"")))
+			.andExpect(content().string(
+				containsString("Kimchi")
+			))
+
+		;
 
 		mvc.perform(get("/restaurants/2020"))
 			.andExpect(status().isOk())
