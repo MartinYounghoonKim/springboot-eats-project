@@ -17,7 +17,8 @@ public class Restaurant {
 	}
 
 	public Restaurant(String name, String address) {
-		this(1L, name, address);
+		this.name = name;
+		this.address = address;
 	}
 
 	public Restaurant(Long id, String name, String address) {
@@ -56,4 +57,7 @@ public class Restaurant {
 		}
 	}
 
+	public void setId(long id) {
+		this.id = id;
+	}
 }
