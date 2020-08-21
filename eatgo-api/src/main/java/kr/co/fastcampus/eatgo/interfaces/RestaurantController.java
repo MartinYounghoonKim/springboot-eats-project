@@ -3,10 +3,11 @@ package kr.co.fastcampus.eatgo.interfaces;
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -40,5 +41,13 @@ public class RestaurantController {
 		Restaurant restaurant = restaurantService.getRestaurant(id); // 컬렉션과 같은 역할을 함
 
 		return restaurant;
+	}
+
+	@PostMapping("/restaurants")
+	public ResponseEntity<String> create (@RequestBody Restaurant restaurant) throws URISyntaxException {
+		restaurantService.addRestaurant(restaurant);
+
+		URI location = new URI("/restaurants/" + restaurant.getId());
+		return ResponseEntity.created(location).body("생성!");
 	}
 }

@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -15,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(RestaurantController.class) // 해당 컨트롤러를 테스트 하겠다 라는 의미
@@ -71,6 +74,20 @@ class RestaurantControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("\"id\":2020")))
 			.andExpect(content().string(containsString("\"name\":\"Martin\"")));
+	}
+
+	@Test
+	public void 레스토랑_생성 () throws Exception {
+		mvc.perform(
+			post("/restaurants")
+				.content("{\"name\": \"BeRyong\", address: \"Seoul\"}")
+				.contentType(MediaType.APPLICATION_JSON)
+			)
+			.andExpect(status().isCreated())
+			.andExpect(header().string("location", "/restaurants/1234"))
+			.andExpect(content().string("생성!"));
+
+		verify(restaurantService).addRestaurant(any()); // 호출 여부만 판단
 	}
 
 }
