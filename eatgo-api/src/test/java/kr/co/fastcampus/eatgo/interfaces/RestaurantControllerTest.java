@@ -78,14 +78,12 @@ class RestaurantControllerTest {
 
 	@Test
 	public void 레스토랑_생성 () throws Exception {
-		mvc.perform(
-			post("/restaurants")
-				.content("{\"name\": \"BeRyong\", address: \"Seoul\"}")
+		mvc.perform(post("/restaurants")
 				.contentType(MediaType.APPLICATION_JSON)
-			)
+				.content("{\"name\": \"BeRyong\", \"address\": \"Seoul\"}"))
 			.andExpect(status().isCreated())
 			.andExpect(header().string("location", "/restaurants/1234"))
-			.andExpect(content().string("생성!"));
+			.andExpect(content().string("{}"));
 
 		verify(restaurantService).addRestaurant(any()); // 호출 여부만 판단
 	}
