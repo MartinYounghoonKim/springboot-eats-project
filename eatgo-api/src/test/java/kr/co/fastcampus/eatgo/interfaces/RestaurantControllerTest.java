@@ -19,8 +19,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
@@ -88,4 +87,11 @@ class RestaurantControllerTest {
 		verify(restaurantService).addRestaurant(any()); // 호출 여부만 판단
 	}
 
+	@Test
+	public void update () throws Exception {
+		mvc.perform(patch("/restaurants/1004")
+			.contentType(MediaType.APPLICATION_JSON)
+			.content("{ \"name\": \"JOKER Bar\", \"address\": \"Busan\" }"))
+			.andExpect(status().isOk());
+	}
 }
