@@ -1,5 +1,7 @@
 package kr.co.fastcampus.eatgo.domain;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +18,7 @@ public class Restaurant {
 	private String address;
 
 	@Transient
+	@JsonInclude(Include.NON_NULL) // Null 일 경우에는 JSON 응답 값에 넣어주지 않는다.
 	private List<MenuItem> menuItems = new ArrayList<>();
 
 	public Restaurant() {
