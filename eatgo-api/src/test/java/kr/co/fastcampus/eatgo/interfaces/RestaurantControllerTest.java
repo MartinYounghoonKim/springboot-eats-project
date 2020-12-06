@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.interfaces;
 import kr.co.fastcampus.eatgo.application.RestaurantService;
 import kr.co.fastcampus.eatgo.domain.MenuItem;
 import kr.co.fastcampus.eatgo.domain.Restaurant;
+import kr.co.fastcampus.eatgo.exception.RestaurantNotFountException;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ class RestaurantControllerTest {
 	}
 
 	@Test
-	public void 가게상세_받아오기 () throws Exception {
+	public void 가게상세조회시_데이터가_있는_경우 () throws Exception {
 		// Mock 데이터 주입을 위한 객체
 		Restaurant restaurant1 = new Restaurant(1004L, "Bob zip", "Seoul");
 		Restaurant restaurant2 = new Restaurant(2020L, "Martin", "Seoul");
@@ -73,6 +74,14 @@ class RestaurantControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().string(containsString("\"id\":2020")))
 			.andExpect(content().string(containsString("\"name\":\"Martin\"")));
+	}
+
+	@Test
+	public void 가게상세조회시_데이터가_없는_경우 () throws Exception {
+		given(restaurantService.getRestaurant(404L)).willThrow(new RestaurantNotFountException(404L));
+		mvc.perform(get("/restaurants/404"))
+		   .andExpect(status().isNotFound())
+		.andExpect(content().string("Could not find restaurant 404"));
 	}
 
 	@Test

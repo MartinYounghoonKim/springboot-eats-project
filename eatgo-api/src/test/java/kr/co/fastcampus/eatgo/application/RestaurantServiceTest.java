@@ -1,6 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import kr.co.fastcampus.eatgo.domain.*;
+import kr.co.fastcampus.eatgo.exception.RestaurantNotFountException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -12,6 +13,8 @@ import java.util.Optional;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -58,12 +61,21 @@ class RestaurantServiceTest {
 	}
 
 	@Test
-	public void 레스트랑_정보_얻기 () {
+	public void 레스트랑_정보가_있는_경우_해당_정보_얻기 () {
 		Restaurant restaurant = restaurantService.getRestaurant(1004L);
 		assertThat(restaurant.getId(), is(1004L));
 
 		MenuItem menuItem = restaurant.getMenuItems().get(0);
 		assertThat(menuItem.getName(), is("Kimchi"));
+	}
+	@Test
+	public void 레스트랑_정보가_없는_경우 () {
+		// Exception 발생을 테스트 하고 싶은경우 아래와 같이 한다.
+		// Junit4 에서는 @Test(expected=vRestaurantNotFountException.class) 로 처리하면 됨
+		Exception exception = assertThrows(RestaurantNotFountException.class, () -> {
+			Restaurant restaurant = restaurantService.getRestaurant(404L);
+		});
+		assertThat(exception.getMessage(), is("Could not find restaurant 404"));
 	}
 
 	@Test
