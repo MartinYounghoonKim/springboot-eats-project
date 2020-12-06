@@ -1,6 +1,7 @@
 package kr.co.fastcampus.eatgo.application;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -29,16 +30,14 @@ class MenuItemServiceTest {
     @Test
     public void 벌크업데이트 () {
         List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        menuItems.add(MenuItem.builder()
-                              .name("Kimchi")
-                              .build());
-        menuItems.add(MenuItem.builder()
-                              .name("Gukbab")
-                              .build());
+        menuItems.add(MenuItem.builder().name("Kimchi").build());
+        menuItems.add(MenuItem.builder().name("Gukbab").build());
+        menuItems.add(MenuItem.builder().id(1004L).deleted(true).name("Gukbab").build());
         menuItemService.bulkUpdate(1L, menuItems);
 
         // 두번 실행되는 것을 테스트
         verify(menuItemRepository, times(2)).save(any());
+        verify(menuItemRepository, times(1)).deleteById(eq(1004L));
     }
 
 }
